@@ -7,10 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C76D96C0219ABEFC00D026A7 /* DrawerNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BA219ABEFB00D026A7 /* DrawerNavigationController.swift */; };
+		C76D96C1219ABEFC00D026A7 /* DrawerPanGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BB219ABEFB00D026A7 /* DrawerPanGestureRecognizer.swift */; };
+		C76D96C2219ABEFC00D026A7 /* DrawerPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BC219ABEFC00D026A7 /* DrawerPresentable.swift */; };
+		C76D96C3219ABEFC00D026A7 /* Offset+Clamped.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BD219ABEFC00D026A7 /* Offset+Clamped.swift */; };
+		C76D96C4219ABEFC00D026A7 /* DrawerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BE219ABEFC00D026A7 /* DrawerConfiguration.swift */; };
+		C76D96C5219ABEFC00D026A7 /* UIViewController+Drawer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96BF219ABEFC00D026A7 /* UIViewController+Drawer.swift */; };
+		C76D96CD219ABF8700D026A7 /* DrawerPresenting.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76D96CC219ABF8700D026A7 /* DrawerPresenting.swift */; };
 		C7D3874E2196567A000C1FCE /* Drawer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7D387442196567A000C1FCE /* Drawer.framework */; };
 		C7D387532196567A000C1FCE /* DrawerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D387522196567A000C1FCE /* DrawerTests.swift */; };
 		C7D387552196567A000C1FCE /* Drawer.h in Headers */ = {isa = PBXBuildFile; fileRef = C7D387472196567A000C1FCE /* Drawer.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		C7D3875F219656A3000C1FCE /* DrawerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7D3875E219656A3000C1FCE /* DrawerController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,13 +30,20 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C76D96BA219ABEFB00D026A7 /* DrawerNavigationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerNavigationController.swift; sourceTree = "<group>"; };
+		C76D96BB219ABEFB00D026A7 /* DrawerPanGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerPanGestureRecognizer.swift; sourceTree = "<group>"; };
+		C76D96BC219ABEFC00D026A7 /* DrawerPresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerPresentable.swift; sourceTree = "<group>"; };
+		C76D96BD219ABEFC00D026A7 /* Offset+Clamped.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Offset+Clamped.swift"; sourceTree = "<group>"; };
+		C76D96BE219ABEFC00D026A7 /* DrawerConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerConfiguration.swift; sourceTree = "<group>"; };
+		C76D96BF219ABEFC00D026A7 /* UIViewController+Drawer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Drawer.swift"; sourceTree = "<group>"; };
+		C76D96C6219ABF0D00D026A7 /* JKDrawer.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = JKDrawer.podspec; sourceTree = "<group>"; };
+		C76D96CC219ABF8700D026A7 /* DrawerPresenting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerPresenting.swift; sourceTree = "<group>"; };
 		C7D387442196567A000C1FCE /* Drawer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Drawer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D387472196567A000C1FCE /* Drawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawer.h; sourceTree = "<group>"; };
 		C7D387482196567A000C1FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C7D3874D2196567A000C1FCE /* DrawerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DrawerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D387522196567A000C1FCE /* DrawerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawerTests.swift; sourceTree = "<group>"; };
 		C7D387542196567A000C1FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C7D3875E219656A3000C1FCE /* DrawerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +68,7 @@
 		C7D3873A2196567A000C1FCE = {
 			isa = PBXGroup;
 			children = (
+				C76D96C6219ABF0D00D026A7 /* JKDrawer.podspec */,
 				C7D387462196567A000C1FCE /* Drawer */,
 				C7D387512196567A000C1FCE /* DrawerTests */,
 				C7D387452196567A000C1FCE /* Products */,
@@ -74,7 +88,13 @@
 			isa = PBXGroup;
 			children = (
 				C7D387472196567A000C1FCE /* Drawer.h */,
-				C7D3875E219656A3000C1FCE /* DrawerController.swift */,
+				C76D96BE219ABEFC00D026A7 /* DrawerConfiguration.swift */,
+				C76D96BA219ABEFB00D026A7 /* DrawerNavigationController.swift */,
+				C76D96BB219ABEFB00D026A7 /* DrawerPanGestureRecognizer.swift */,
+				C76D96BC219ABEFC00D026A7 /* DrawerPresentable.swift */,
+				C76D96CC219ABF8700D026A7 /* DrawerPresenting.swift */,
+				C76D96BD219ABEFC00D026A7 /* Offset+Clamped.swift */,
+				C76D96BF219ABEFC00D026A7 /* UIViewController+Drawer.swift */,
 				C7D387482196567A000C1FCE /* Info.plist */,
 			);
 			path = Drawer;
@@ -198,7 +218,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7D3875F219656A3000C1FCE /* DrawerController.swift in Sources */,
+				C76D96C2219ABEFC00D026A7 /* DrawerPresentable.swift in Sources */,
+				C76D96C0219ABEFC00D026A7 /* DrawerNavigationController.swift in Sources */,
+				C76D96C5219ABEFC00D026A7 /* UIViewController+Drawer.swift in Sources */,
+				C76D96CD219ABF8700D026A7 /* DrawerPresenting.swift in Sources */,
+				C76D96C1219ABEFC00D026A7 /* DrawerPanGestureRecognizer.swift in Sources */,
+				C76D96C4219ABEFC00D026A7 /* DrawerConfiguration.swift in Sources */,
+				C76D96C3219ABEFC00D026A7 /* Offset+Clamped.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
