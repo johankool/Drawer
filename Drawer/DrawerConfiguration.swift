@@ -11,6 +11,7 @@ import Foundation
 struct Values {
     static var animationDuration = 0.3
     static var snapAnimationDuration = 0.2
+    static var fadeAnimationDuration = 0.1
 }
 
 public typealias Offset = CGFloat
@@ -71,4 +72,12 @@ public struct DrawerConfiguration {
     
     var panGestureRecognizer: UIPanGestureRecognizer?
     var drawerConstraints: [DrawerConstraintIdentifier: NSLayoutConstraint]
+    
+    // State before drawer gets other drawer stacked on top
+    var beforeState: DrawerState?
+}
+
+struct DrawerState {
+    let offset: CGFloat
+    let height: CGFloat
 }

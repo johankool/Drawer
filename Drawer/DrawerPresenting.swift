@@ -27,29 +27,28 @@ public protocol DrawerPresenting: class {
 
 public extension DrawerPresenting where Self: UIViewController {
     
-//    private var currentDrawer: DrawerPresentable? {
-//        return children.reversed().first(where: { $0 is DrawerPresentable }) as? DrawerPresentable
-//    }
-//    
-//    private func drawerBelowDrawer(_ drawer: DrawerPresentable) -> DrawerPresentable? {
-//        guard let drawerController = drawer as? UIViewController else {
-//            fatalError()
-//        }
-//        
-//        let drawers = children.filter { $0 is DrawerPresentable }
-//        guard let index = drawers.firstIndex(of: drawerController), index > 0 else {
-//           return nil
-//        }
-//        return drawers[index - 1] as? DrawerPresentable
-//    }
+    private var currentDrawer: DrawerPresentable? {
+        return children.reversed().first(where: { $0 is DrawerPresentable }) as? DrawerPresentable
+    }
+    
+    private func drawerBelowDrawer(_ drawer: DrawerPresentable) -> DrawerPresentable? {
+        guard let drawerController = drawer as? UIViewController else {
+            fatalError()
+        }
+        
+        let drawers = children.filter { $0 is DrawerPresentable }
+        guard let index = drawers.firstIndex(of: drawerController), index > 0 else {
+           return nil
+        }
+        return drawers[index - 1] as? DrawerPresentable
+    }
     
     func openDrawer(_ drawer: DrawerPresentable, animated: Bool) {
         guard let drawerController = drawer as? UIViewController else {
             fatalError()
         }
         
-//        let currentDrawer = self.currentDrawer
-//        print("current: \(String(describing: currentDrawer))")
+        let currentDrawer = self.currentDrawer
 
         willOpenDrawer(drawer)
         
@@ -63,24 +62,28 @@ public extension DrawerPresenting where Self: UIViewController {
         drawer.adjustConstraintsForClosed()
         view.layoutIfNeeded()
         
-//        if let currentDrawer = currentDrawer {
-//            drawer.adjustConstraintsForOpened(offset: currentDrawer.offset, height: drawer.configuration.initialOffset)
-//        } else {
-//            drawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: drawer.configuration.initialOffset)
-//        }
-        
-        
-         drawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: drawer.configuration.initialOffset)
-        
-        
+        if let currentDrawer = currentDrawer {
+            // Store before
+            currentDrawer.configuration.beforeState = currentDrawer.state
+            
+            if currentDrawer.offset > drawer.configuration.initialOffset {
+                currentDrawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: currentDrawer.height)
+            }
+        }
+   
+        drawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: drawer.configuration.initialOffset)
         
         let animations: () -> Void = {
+        
             self.view.layoutIfNeeded()
         }
         
         let completion: (Bool) -> Void = { finished in
             drawerController.didMove(toParent: self)
             self.didOpenDrawer(drawer)
+            if let currentDrawerViewController = currentDrawer as? UIViewController {
+                self.fade(view: currentDrawerViewController.view, alpha: 0)
+            }
         }
         
         if animated {
@@ -90,6 +93,13 @@ public extension DrawerPresenting where Self: UIViewController {
             completion(true)
         }
         
+    }
+    
+    private func fade(view: UIView, alpha: CGFloat) {
+        let animations: () -> Void = {
+            view.alpha = alpha
+        }
+        UIView.animate(withDuration: Values.fadeAnimationDuration, animations: animations, completion: nil)
     }
     
     func setupPanGestureRecognizer(drawer: DrawerPresentable) {
@@ -155,9 +165,17 @@ public extension DrawerPresenting where Self: UIViewController {
             return
         }
         
-//        let nextDrawer = drawerBelowDrawer(drawer)
-//        print("next: \(String(describing: nextDrawer))")
-
+        let nextDrawer = drawerBelowDrawer(drawer)
+        
+        // Restore previous drawer
+        if let nextDrawer = nextDrawer, let beforeState = nextDrawer.configuration.beforeState {
+            nextDrawer.adjustConstraintsForOpened(offset: beforeState.offset, height: beforeState.height)
+            
+            if let nextDrawerViewController = nextDrawer as? UIViewController {
+                self.fade(view: nextDrawerViewController.view, alpha: 1)
+            }
+        }
+        
         willCloseDrawer(drawer)
         
         drawer.adjustConstraintsForClosed()

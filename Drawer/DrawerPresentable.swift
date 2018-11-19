@@ -54,4 +54,19 @@ public extension DrawerPresentable {
         return offset
     }
     
+    var height: CGFloat {
+        guard let heightConstraint = configuration.drawerConstraints[.height] else {
+            return 0
+        }
+        return heightConstraint.constant
+    }
+    
+}
+
+extension DrawerPresentable {
+    
+    var state: DrawerState {
+        return DrawerState(offset: offset, height: height)
+    }
+    
 }
