@@ -17,5 +17,13 @@ public extension UIViewController {
         }
         return candidate as? DrawerPresenting
     }
-    
+
+    public var drawers: [DrawerPresentable] {
+        return children.compactMap({ $0 as? DrawerPresentable })
+    }
+
+    public var visibleDrawer: DrawerPresentable? {
+        return drawers.last
+    }
+
 }

@@ -200,7 +200,7 @@ public extension DrawerPresenting where Self: UIViewController {
     }
     
     func changeDrawer(_ drawer: DrawerPresentable, offset: CGFloat, clamped: Bool, animated: Bool) {
-        let offset2: CGFloat
+        let adjustedOffset: CGFloat
         var height: CGFloat
         let minHeight = drawer.configuration.allowedRange.lowerBound
         
@@ -215,25 +215,25 @@ public extension DrawerPresenting where Self: UIViewController {
             if let adjustRange = drawer.configuration.adjustRange {
                 height = adjustRange(height)
             }
-            offset2 = height
+            adjustedOffset = height
         } else {
             height = offset.clamped(to: drawer.configuration.allowedRange)
             if drawer.configuration.isClosable {
                 let maxHeight = drawer.configuration.allowedRange.upperBound
-                offset2 = min(maxHeight, offset)
+                adjustedOffset = min(maxHeight, offset)
             } else {
-                offset2 = offset.clamped(to: drawer.configuration.allowedRange)
+                adjustedOffset = offset.clamped(to: drawer.configuration.allowedRange)
             }
         }
         
-        drawer.adjustConstraintsForOpened(offset: offset2, height: height)
+        drawer.adjustConstraintsForOpened(offset: adjustedOffset, height: height)
         
         let animations: () -> Void = {
             self.view.layoutIfNeeded()
         }
         
         let completion: (Bool) -> Void = { finished in
-            self.didChangeHeightOfDrawer(drawer, to: offset)
+            self.didChangeHeightOfDrawer(drawer, to: adjustedOffset)
         }
         
         if animated {
