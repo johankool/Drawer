@@ -40,7 +40,7 @@ public struct DrawerConfiguration {
     public let initialOffset: Offset
     
     /// The range of offsets the drawer is allowed to have.
-    public let allowedRange: ClosedRange<Offset>
+    public var allowedRange: ClosedRange<Offset>
     
     /// Ability to adjust offset to enable snapping
     public let adjustRange: ((Offset) -> Offset)?
