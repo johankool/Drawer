@@ -108,7 +108,11 @@ public extension DrawerPresenting where Self: UIViewController {
         }
         
         let panGestureRecognizer = DrawerPanGestureRecognizer()
-        panGestureRecognizer.setDidPan(delegate: self) { delegate, recognizer in
+        panGestureRecognizer.setDidPan(delegate: self) { [weak drawer] delegate, recognizer in
+            guard let drawer = drawer else {
+                return
+            }
+            
             delegate.handlePanGestureRecognizer(recognizer, for: drawer)
         }
         panGestureRecognizer.isEnabled = drawer.configuration.isDraggable
