@@ -11,7 +11,8 @@ import Foundation
 class DrawerPanGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDelegate {
     
     private var didPan: ((UIPanGestureRecognizer) -> Void)?
-    
+    private var shouldRecognizeSimultaneously: ((UIPanGestureRecognizer, UIGestureRecognizer) -> Bool)?
+
     init() {
         super.init(target: nil, action: nil)
         delegate = self
@@ -21,7 +22,7 @@ class DrawerPanGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDel
     }
     
     func setDidPan<Object: AnyObject>(delegate: Object, callback: @escaping (Object, UIPanGestureRecognizer) -> Void) {
-        self.didPan = { [weak delegate] recognizer in
+        didPan = { [weak delegate] recognizer in
             if let delegate = delegate {
                 callback(delegate, recognizer)
             }
@@ -31,9 +32,19 @@ class DrawerPanGestureRecognizer: UIPanGestureRecognizer, UIGestureRecognizerDel
     @objc private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer) {
         didPan?(gestureRecognizer)
     }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        return false
+
+    func setShouldRecognizeSimultaneously<Object: AnyObject>(delegate: Object, callback: @escaping (Object, UIPanGestureRecognizer, UIGestureRecognizer) -> Bool) {
+        shouldRecognizeSimultaneously = { [weak delegate] recognizer, other -> Bool in
+            if let delegate = delegate {
+                return callback(delegate, recognizer, other)
+            } else {
+                return false
+            }
+        }
     }
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return shouldRecognizeSimultaneously?(gestureRecognizer as! UIPanGestureRecognizer, otherGestureRecognizer) ?? false
+    }
+
 }

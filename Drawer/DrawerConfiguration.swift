@@ -51,11 +51,14 @@ public struct DrawerConfiguration {
             panGestureRecognizer?.isEnabled = isDraggable
         }
     }
+
+    /// If the drawer contains a scrollview, provide it here so that can drag the drawer when scrolled to the top
+    public weak var scrollView: UIScrollView?
     
     /// When `true` the drawer can be dragged closed. It will close if the offset is below half of the lower bound of the `allowedRange`.
     public let isClosable: Bool
     
-    public init(initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false) {
+    public init(initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, scrollView: UIScrollView? = nil) {
         self.gravity = .bottom
         self.initialOffset = initialOffset
         self.allowedRange = allowedRange
@@ -64,6 +67,7 @@ public struct DrawerConfiguration {
         self.drawerConstraints = [:]
         self.isDraggable = isDraggable
         self.isClosable = isClosable
+        self.scrollView = scrollView
     }
     
     public init(offset: Offset, isDraggable: Bool = true, isClosable: Bool = false) {
