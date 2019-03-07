@@ -115,6 +115,20 @@ public extension DrawerPresenting where Self: UIViewController {
             
             delegate.handlePanGestureRecognizer(recognizer, for: drawer)
         }
+        panGestureRecognizer.setShouldRecognizeSimultaneously(delegate: self) { [weak drawer] delegate, recognizer, other -> Bool in
+            guard let scrollView = drawer?.configuration.scrollView else {
+                return false
+            }
+            let direction = recognizer.velocity(in: contentView).y
+            if scrollView.contentOffset.y == 0 && direction > 0 {
+                scrollView.isScrollEnabled = false
+            } else {
+                scrollView.isScrollEnabled = true
+            }
+
+            let isPan = scrollView.panGestureRecognizer == other
+            return !isPan
+        }
         panGestureRecognizer.isEnabled = drawer.configuration.isDraggable
         drawer.configuration.panGestureRecognizer = panGestureRecognizer
         contentView.addGestureRecognizer(panGestureRecognizer)

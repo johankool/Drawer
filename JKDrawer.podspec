@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name          = "JKDrawer"
-  s.version       = "0.4.2"
+  s.version       = "0.5.0"
  
   s.summary       = "A Maps like drawer for iOS."
   s.description   = <<-DESC
