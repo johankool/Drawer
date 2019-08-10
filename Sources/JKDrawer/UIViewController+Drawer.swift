@@ -10,7 +10,7 @@ import UIKit
 
 public extension UIViewController {
     
-    public var drawerController: DrawerPresenting? {
+    var drawerController: DrawerPresenting? {
         var candidate: UIViewController? = self
         while !(candidate is DrawerPresenting || candidate == nil) {
             candidate = candidate?.parent
@@ -18,11 +18,11 @@ public extension UIViewController {
         return candidate as? DrawerPresenting
     }
 
-    public var drawers: [DrawerPresentable] {
+    var drawers: [DrawerPresentable] {
         return children.compactMap({ $0 as? DrawerPresentable })
     }
 
-    public var visibleDrawer: DrawerPresentable? {
+    var visibleDrawer: DrawerPresentable? {
         return drawers.last
     }
 

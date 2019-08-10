@@ -10,7 +10,7 @@ import Foundation
 
 public extension Offset {
     
-    public func clamped(to range: ClosedRange<Offset>) -> Offset {
+    func clamped(to range: ClosedRange<Offset>) -> Offset {
         return Offset.minimum(range.upperBound, Offset.maximum(range.lowerBound, self))
     }
     

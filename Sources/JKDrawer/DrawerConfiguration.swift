@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Values {
     static var animationDuration = 0.3
