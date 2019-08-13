@@ -52,15 +52,42 @@ https://github.com/johankool/Drawer.git
 
 To be able to present a view controller as a drawer it must conform to the `DrawerPresentable` protocol. This protocol requires that configuration variable is present. This is a `DrawerConfiguration` struct specifying certain aspects like initial offset and allowed range. 
 
+```swift
+class DrawerViewController: UIViewController, DrawerPresentable {
+
+    var configuration = DrawerConfiguration(offset: 300, isDraggable: true, isClosable: false)
+
+}
+```
+
 The presenting view controller must conform to the `DrawerPresenting` protocol. Some methods have default implementations, others are callbacks for your convenience.
 
 ```swift
+class HostViewController: UIViewController, DrawerPresenting {
 
-class PresentingViewcontroller: UIViewcontroller, DrawerPresenting {
-    
-    func someMethod() {
-        let presentabbleVC = ... // Conforms to DrawerPresentable
-        openDrawer(presentabbleVC, animatedd: true)
+    func someAction() {
+        let drawerViewController = DrawerViewController()
+        openDrawer(drawerViewController, animated: true)
+    }
+
+    func willOpenDrawer(_ drawer: DrawerPresentable) {
+
+    }
+
+    func didOpenDrawer(_ drawer: DrawerPresentable) {
+
+    }
+
+    func willCloseDrawer(_ drawer: DrawerPresentable) {
+
+    }
+
+    func didCloseDrawer(_ drawer: DrawerPresentable) {
+
+    }
+
+    func didChangeHeightOfDrawer(_ drawer: DrawerPresentable, to height: CGFloat) {
+
     }
 
 }
