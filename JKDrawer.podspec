@@ -6,11 +6,21 @@ Pod::Spec.new do |s|
  
   s.summary       = "A Maps like drawer for iOS."
   s.description   = <<-DESC
-                    A Maps like drawer for iOS.
+A Maps like drawer for iOS.
+
+Features:
+
+- control drawer size
+- snap to preferred sizes
+- multiple stacked drawers
+- dragging and closing using gestures
+- handling nested scroll views
+- subtle animations
+- no need to subclass view controllers
                     DESC
 
   s.homepage      = "https://github.com/johankool/Drawer"
-  s.license       = "MIT"
+  s.license       = { :type => 'MIT', :file => 'LICENSE.md' }
   s.author        = { "Johan Kool" => "johan@egeniq.com" }
 
   s.ios.deployment_target = "10.0"
