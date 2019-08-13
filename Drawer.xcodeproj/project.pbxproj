@@ -29,6 +29,8 @@
 		C7D387442196567A000C1FCE /* Drawer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Drawer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7D387472196567A000C1FCE /* Drawer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Drawer.h; sourceTree = "<group>"; };
 		C7D387482196567A000C1FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C7DEDEB8230353D8002CD718 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C7DEDEB923035F4F002CD718 /* LICENCE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENCE.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -45,6 +47,8 @@
 		C7D3873A2196567A000C1FCE = {
 			isa = PBXGroup;
 			children = (
+				C7DEDEB923035F4F002CD718 /* LICENCE.md */,
+				C7DEDEB8230353D8002CD718 /* README.md */,
 				C76D96C6219ABF0D00D026A7 /* JKDrawer.podspec */,
 				C7D387462196567A000C1FCE /* Sources */,
 				C7D387452196567A000C1FCE /* Products */,
