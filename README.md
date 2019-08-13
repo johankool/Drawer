@@ -101,4 +101,4 @@ Since you can't open a drawer over a `UINavigationController`. Consider using a 
 
 Copyright (c) 2018-2019 Johan Kool
 
-Licensed under [BSD-2-Clause-Patent](LICENSE)
+Licensed under [BSD-2-Clause-Patent](LICENSE.md)
