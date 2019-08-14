@@ -42,7 +42,7 @@ github "johankool/Drawer" ~> 0.6.0
 
 ### Swift Package Manager
 
-The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is included with Xcode 11+. To integrate JKDrawer into your Xcode project using Swift Package Manager, paste this URL into Xcode via File > Packages > Add Package:
+The [Swift Package Manager](https://swift.org/package-manager/) is a tool for automating the distribution of Swift code and is included with Xcode 11+. To integrate JKDrawer into your Xcode project using Swift Package Manager, paste this URL into Xcode via File > Swift Packages > Add Package Dependency:
 
 ```
 https://github.com/johankool/Drawer.git
@@ -95,7 +95,7 @@ class HostViewController: UIViewController, DrawerPresenting {
 
 ### Navigation Controllers
 
-Since you can't open a drawer over a `UINavigationController`. Consider using a custom view controller wrapping the `UINavigationController` instead or use `DrawerNavigationController`.
+Since you can't open a drawer over a `UINavigationController`, consider using a custom view controller wrapping the `UINavigationController` instead or use `DrawerNavigationController`.
 
 ## License
 
