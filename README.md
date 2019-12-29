@@ -86,7 +86,7 @@ class HostViewController: UIViewController, DrawerPresenting {
 
     }
 
-    func didChangeHeightOfDrawer(_ drawer: DrawerPresentable, to height: CGFloat) {
+    func didChangeSizeOfDrawer(_ drawer: DrawerPresentable, to size: CGFloat) {
 
     }
 

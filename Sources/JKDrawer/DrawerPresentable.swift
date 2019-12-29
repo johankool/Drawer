@@ -22,44 +22,44 @@ public extension DrawerPresentable {
         configuration.drawerConstraints[identifier] = constraint
     }
     
-    func adjustConstraintsForOpened(offset: CGFloat, height: CGFloat) {
-        guard let heightConstraint = configuration.drawerConstraints[.height] else {
+    func adjustConstraintsForOpened(offset: CGFloat, size: CGFloat) {
+        guard let sizeConstraint = configuration.drawerConstraints[.size] else {
             return
         }
-        heightConstraint.constant = height
+        sizeConstraint.constant = size
         
-        guard let bottomConstraint = configuration.drawerConstraints[.bottom] else {
+        guard let edgeConstraint = configuration.drawerConstraints[.edge] else {
             return
         }
-        bottomConstraint.constant = -(offset - height)
+        edgeConstraint.constant = -(offset - size)
     }
     
     func adjustConstraintsForClosed() {
-        guard let heightConstraint = configuration.drawerConstraints[.height] else {
+        guard let sizeConstraint = configuration.drawerConstraints[.size] else {
             return
         }
-        adjustConstraintsForOpened(offset: -heightConstraint.constant, height: heightConstraint.constant)
+        adjustConstraintsForOpened(offset: -sizeConstraint.constant, size: sizeConstraint.constant)
     }
     
     var offset: CGFloat {
-        guard let heightConstraint = configuration.drawerConstraints[.height] else {
+        guard let sizeConstraint = configuration.drawerConstraints[.size] else {
             return 0
         }
-        let height = heightConstraint.constant
+        let size = sizeConstraint.constant
         
-        guard let bottomConstraint = configuration.drawerConstraints[.bottom] else {
-            return height
+        guard let edgeConstraint = configuration.drawerConstraints[.edge] else {
+            return size
         }
-        let offset = height - bottomConstraint.constant
+        let offset = size - edgeConstraint.constant
         
         return offset
     }
     
-    var height: CGFloat {
-        guard let heightConstraint = configuration.drawerConstraints[.height] else {
+    var size: CGFloat {
+        guard let sizeConstraint = configuration.drawerConstraints[.size] else {
             return 0
         }
-        return heightConstraint.constant
+        return sizeConstraint.constant
     }
     
 }
@@ -67,7 +67,7 @@ public extension DrawerPresentable {
 extension DrawerPresentable {
     
     var state: DrawerState {
-        return DrawerState(offset: offset, height: height)
+        return DrawerState(offset: offset, size: size)
     }
     
 }

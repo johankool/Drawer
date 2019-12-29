@@ -22,22 +22,34 @@ public protocol DrawerPresenting: class {
     func willCloseDrawer(_ drawer: DrawerPresentable)
     func didCloseDrawer(_ drawer: DrawerPresentable)
 
-    func didChangeHeightOfDrawer(_ drawer: DrawerPresentable, to height: CGFloat)
+    func didChangeSizeOfDrawer(_ drawer: DrawerPresentable, to size: Size)
 
 }
 
 public extension DrawerPresenting where Self: UIViewController {
 
-    private var currentDrawer: DrawerPresentable? {
-        return children.reversed().first(where: { $0 is DrawerPresentable }) as? DrawerPresentable
+    private func currentDrawerForGravity(_ gravity: Gravity) -> DrawerPresentable? {
+        return children.reversed().first(where: { child in
+            guard let drawer = child as? DrawerPresentable else {
+                return false
+            }
+            return drawer.configuration.gravity == gravity
+        }) as? DrawerPresentable
     }
-
+    
     private func drawerBelowDrawer(_ drawer: DrawerPresentable) -> DrawerPresentable? {
         guard let drawerController = drawer as? UIViewController else {
             fatalError()
         }
 
-        let drawers = children.filter { $0 is DrawerPresentable }
+        // Return the drawer below with the same gravity as ours
+        let gravity = drawer.configuration.gravity
+        let drawers = children.filter { child in
+            guard let drawer = child as? DrawerPresentable else {
+                return false
+            }
+            return drawer.configuration.gravity == gravity
+        }
         guard let index = drawers.firstIndex(of: drawerController), index > 0 else {
             return nil
         }
@@ -49,7 +61,7 @@ public extension DrawerPresenting where Self: UIViewController {
             fatalError()
         }
 
-        let currentDrawer = self.currentDrawer
+        let currentDrawer = currentDrawerForGravity(drawer.configuration.gravity)
 
         willOpenDrawer(drawer)
 
@@ -68,11 +80,11 @@ public extension DrawerPresenting where Self: UIViewController {
             currentDrawer.configuration.beforeState = currentDrawer.state
 
             if currentDrawer.offset > drawer.configuration.initialOffset {
-                currentDrawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: currentDrawer.height)
+                currentDrawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, size: currentDrawer.size)
             }
         }
 
-        drawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, height: drawer.configuration.initialOffset)
+        drawer.adjustConstraintsForOpened(offset: drawer.configuration.initialOffset, size: drawer.configuration.initialOffset)
 
         let animations: () -> Void = {
 
@@ -116,15 +128,21 @@ public extension DrawerPresenting where Self: UIViewController {
 
             delegate.handlePanGestureRecognizer(recognizer, for: drawer)
         }
+        let gravity = drawer.configuration.gravity
         panGestureRecognizer.setShouldRecognizeSimultaneously(delegate: self) { [weak drawer] delegate, recognizer, other -> Bool in
             guard let scrollView = drawer?.configuration.scrollView else {
                 return false
             }
-            let direction = recognizer.velocity(in: contentView).y
-            if scrollView.contentOffset.y == 0 && direction > 0 {
-                scrollView.isScrollEnabled = false
-            } else {
-                scrollView.isScrollEnabled = true
+            
+            switch gravity {
+            case .left:
+                scrollView.isScrollEnabled = !(scrollView.isAtRight && recognizer.velocity(in: contentView).x > 0)
+            case .right:
+                scrollView.isScrollEnabled = !(scrollView.isAtLeft && recognizer.velocity(in: contentView).x < 0)
+            case .top:
+                scrollView.isScrollEnabled = !(scrollView.isAtBottom && recognizer.velocity(in: contentView).y < 0)
+            case .bottom:
+                scrollView.isScrollEnabled = !(scrollView.isAtTop && recognizer.velocity(in: contentView).y > 0)
             }
 
             let isPan = scrollView.panGestureRecognizer == other
@@ -148,10 +166,20 @@ public extension DrawerPresenting where Self: UIViewController {
     }
 
     private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer, for drawer: DrawerPresentable) {
-        let yTranslation = gestureRecognizer.translation(in: view).y
+        let translation: CGFloat
+        switch drawer.configuration.gravity {
+        case .bottom:
+            translation = gestureRecognizer.translation(in: view).y
+        case .left:
+            translation = -gestureRecognizer.translation(in: view).x
+        case .top:
+            translation = -gestureRecognizer.translation(in: view).y
+        case .right:
+            translation = gestureRecognizer.translation(in: view).x
+        }
         gestureRecognizer.setTranslation(.zero, in: view)
 
-        let offset = drawer.offset - yTranslation
+        let offset = drawer.offset - translation
 
         switch gestureRecognizer.state {
         case .began, .changed:
@@ -170,23 +198,44 @@ public extension DrawerPresenting where Self: UIViewController {
 
         drawerController.view.translatesAutoresizingMaskIntoConstraints = false
 
-        let heightConstraint = contentView.heightAnchor.constraint(equalToConstant: drawer.configuration.initialOffset)
-        drawer.addConstraint(heightConstraint, for: .height)
-
-        let leadingConstraint = contentView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        drawer.addConstraint(leadingConstraint, for: .leading)
-
-        let trailingConstraint = contentView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        drawer.addConstraint(trailingConstraint, for: .trailing)
-
-        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        drawer.addConstraint(bottomConstraint, for: .bottom)
-
-        NSLayoutConstraint.activate([heightConstraint, leadingConstraint, trailingConstraint, bottomConstraint])
+        let sizeConstraint: NSLayoutConstraint
+        let side1Constraint: NSLayoutConstraint
+        let side2Constraint: NSLayoutConstraint
+        let edgeConstraint: NSLayoutConstraint
+            
+        switch drawer.configuration.gravity {
+        case .left:
+            sizeConstraint = contentView.widthAnchor.constraint(equalToConstant: drawer.configuration.initialOffset)
+            side1Constraint = contentView.topAnchor.constraint(equalTo: view.topAnchor)
+            side2Constraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            edgeConstraint = view.leftAnchor.constraint(equalTo: contentView.leftAnchor)
+        case .right:
+            sizeConstraint = contentView.widthAnchor.constraint(equalToConstant: drawer.configuration.initialOffset)
+            side1Constraint = contentView.topAnchor.constraint(equalTo: view.topAnchor)
+            side2Constraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            edgeConstraint = contentView.rightAnchor.constraint(equalTo: view.rightAnchor)
+        case .top:
+            sizeConstraint = contentView.heightAnchor.constraint(equalToConstant: drawer.configuration.initialOffset)
+            side1Constraint = contentView.leftAnchor.constraint(equalTo: view.leftAnchor)
+            side2Constraint = contentView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            edgeConstraint = view.topAnchor.constraint(equalTo: contentView.topAnchor)
+        case .bottom:
+            sizeConstraint = contentView.heightAnchor.constraint(equalToConstant: drawer.configuration.initialOffset)
+            side1Constraint = contentView.leftAnchor.constraint(equalTo: view.leftAnchor)
+            side2Constraint = contentView.rightAnchor.constraint(equalTo: view.rightAnchor)
+            edgeConstraint = contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        }
+       
+        drawer.addConstraint(sizeConstraint, for: .size)
+        drawer.addConstraint(side1Constraint, for: .side1)
+        drawer.addConstraint(side2Constraint, for: .side2)
+        drawer.addConstraint(edgeConstraint, for: .edge)
+        
+        NSLayoutConstraint.activate([sizeConstraint, side1Constraint, side2Constraint, edgeConstraint])
     }
 
     func removeConstraints(drawer: DrawerPresentable) {
-        let constraints = drawer.configuration.drawerConstraints.map { return $0.value }
+        let constraints = drawer.configuration.drawerConstraints.map { $0.value }
         NSLayoutConstraint.deactivate(constraints)
         drawer.configuration.drawerConstraints.removeAll()
     }
@@ -200,7 +249,7 @@ public extension DrawerPresenting where Self: UIViewController {
 
         // Restore previous drawer
         if let nextDrawer = nextDrawer, let beforeState = nextDrawer.configuration.beforeState {
-            nextDrawer.adjustConstraintsForOpened(offset: beforeState.offset, height: beforeState.height)
+            nextDrawer.adjustConstraintsForOpened(offset: beforeState.offset, size: beforeState.size)
 
             if let nextDrawerViewController = nextDrawer as? UIViewController {
                 self.fade(view: nextDrawerViewController.view, alpha: 1)
@@ -233,39 +282,39 @@ public extension DrawerPresenting where Self: UIViewController {
 
     func changeDrawer(_ drawer: DrawerPresentable, offset: CGFloat, clamped: Bool, animated: Bool) {
         let adjustedOffset: CGFloat
-        var height: CGFloat
-        let minHeight = drawer.configuration.allowedRange.lowerBound
+        var size: CGFloat
+        let minSize = drawer.configuration.allowedRange.lowerBound
 
         if clamped {
-            let closeTreshold = minHeight / 2
+            let closeTreshold = minSize / 2
             if drawer.configuration.isClosable, offset < closeTreshold {
                 closeDrawer(drawer, animated: true)
                 return
             }
 
-            height = offset.clamped(to: drawer.configuration.allowedRange)
+            size = offset.clamped(to: drawer.configuration.allowedRange)
             if let adjustRange = drawer.configuration.adjustRange {
-                height = adjustRange(height)
+                size = adjustRange(size)
             }
-            adjustedOffset = height
+            adjustedOffset = size
         } else {
-            height = offset.clamped(to: drawer.configuration.allowedRange)
+            size = offset.clamped(to: drawer.configuration.allowedRange)
             if drawer.configuration.isClosable {
-                let maxHeight = drawer.configuration.allowedRange.upperBound
-                adjustedOffset = min(maxHeight, offset)
+                let maxSize = drawer.configuration.allowedRange.upperBound
+                adjustedOffset = min(maxSize, offset)
             } else {
                 adjustedOffset = offset.clamped(to: drawer.configuration.allowedRange)
             }
         }
 
-        drawer.adjustConstraintsForOpened(offset: adjustedOffset, height: height)
+        drawer.adjustConstraintsForOpened(offset: adjustedOffset, size: size)
 
         let animations: () -> Void = {
             self.view.layoutIfNeeded()
         }
 
         let completion: (Bool) -> Void = { finished in
-            self.didChangeHeightOfDrawer(drawer, to: adjustedOffset)
+            self.didChangeSizeOfDrawer(drawer, to: adjustedOffset)
         }
 
         if animated {

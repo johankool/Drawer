@@ -7,11 +7,12 @@
 //
 
 import Foundation
+import UIKit
 
-public extension Offset {
+public extension CGFloat {
     
-    func clamped(to range: ClosedRange<Offset>) -> Offset {
-        return Offset.minimum(range.upperBound, Offset.maximum(range.lowerBound, self))
+    func clamped(to range: ClosedRange<CGFloat>) -> CGFloat {
+        return CGFloat.minimum(range.upperBound, CGFloat.maximum(range.lowerBound, self))
     }
     
 }

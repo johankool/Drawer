@@ -77,7 +77,7 @@
 				C7D387482196567A000C1FCE /* Info.plist */,
 			);
 			name = Sources;
-			path = Sources/JKDrawer;
+			path = ../Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

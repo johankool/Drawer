@@ -16,28 +16,30 @@ struct Values {
 }
 
 public typealias Offset = CGFloat
+public typealias Size = CGFloat
 
 enum DrawerConstraintIdentifier: String {
-    case height = "drawer_height"
-    case leading = "drawer_leading"
-    case trailing = "drawer_trailing"
-    case bottom = "drawer_bottom"
+    case size = "drawerSize"
+    case side1 = "drawerSide1"
+    case side2 = "drawerSide2"
+    case edge = "drawerEdge"
+}
+
+public enum Gravity {
+    case left
+    case right
+    case top
+    case bottom
 }
 
 public struct DrawerConfiguration {
-    public enum Gravity {
-        case leading
-        case trailing
-        case top
-        case bottom
-    }
-    
-    /// Gravity determines on which side the drawer appears. Currently only `.bottom` is supported
+   
+    /// Gravity determines on which side the drawer appears.
     public let gravity: Gravity
     
     /// The initial offset for the drawer.
     ///
-    /// The offset is distance from the parent view at the side where the drawer is attached to the opposite side. For example, when `gravity` is `.bottom` it is the distance from the bottom of the parent view to the top of the drawer. Note that the height of the drawer may be different and could be partly offscreen.
+    /// The offset is distance from the parent view at the side where the drawer is attached to the opposite side. For example, when `gravity` is `.bottom` it is the distance from the bottom of the parent view to the top of the drawer. Note that the size of the drawer may be different and could be partly offscreen.
     public let initialOffset: Offset
     
     /// The range of offsets the drawer is allowed to have.
@@ -59,8 +61,8 @@ public struct DrawerConfiguration {
     /// When `true` the drawer can be dragged closed. It will close if the offset is below half of the lower bound of the `allowedRange`.
     public let isClosable: Bool
     
-    public init(initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, scrollView: UIScrollView? = nil) {
-        self.gravity = .bottom
+    public init(gravity: Gravity = .bottom, initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, scrollView: UIScrollView? = nil) {
+        self.gravity = gravity
         self.initialOffset = initialOffset
         self.allowedRange = allowedRange
         self.adjustRange = adjustRange
@@ -71,8 +73,8 @@ public struct DrawerConfiguration {
         self.scrollView = scrollView
     }
     
-    public init(offset: Offset, isDraggable: Bool = true, isClosable: Bool = false) {
-        self.init(initialOffset: offset, allowedRange: offset...offset, isDraggable: isDraggable, isClosable: isClosable)
+    public init(gravity: Gravity = .bottom, offset: Offset, isDraggable: Bool = true, isClosable: Bool = false) {
+        self.init(gravity: gravity, initialOffset: offset, allowedRange: offset...offset, isDraggable: isDraggable, isClosable: isClosable)
     }
     
     var panGestureRecognizer: UIPanGestureRecognizer?
@@ -83,6 +85,6 @@ public struct DrawerConfiguration {
 }
 
 struct DrawerState {
-    let offset: CGFloat
-    let height: CGFloat
+    let offset: Offset
+    let size: Size
 }
