@@ -15,10 +15,10 @@ class MainViewController: UIViewController {
     @IBOutlet weak var gravitySelector: UISegmentedControl!
     @IBOutlet weak var initialOffsetStepper: UIStepper!
     @IBOutlet weak var initialOffsetLabel: UILabel!
-    @IBOutlet weak var minimumSizeStepper: UIStepper!
-    @IBOutlet weak var minimumSizeLabel: UILabel!
-    @IBOutlet weak var maximumSizeStepper: UIStepper!
-    @IBOutlet weak var maximumSizeLabel: UILabel!
+    @IBOutlet weak var minimumOffsetStepper: UIStepper!
+    @IBOutlet weak var minimumOffsetLabel: UILabel!
+    @IBOutlet weak var maximumOffsetStepper: UIStepper!
+    @IBOutlet weak var maximumOffsetLabel: UILabel!
     @IBOutlet weak var draggableSwitch: UISwitch!
     @IBOutlet weak var closeableSwitch: UISwitch!
     
@@ -38,9 +38,11 @@ class MainViewController: UIViewController {
             fatalError()
         }
         let initialOffset = Offset(initialOffsetStepper!.value)
-        let minimumSize = Offset(minimumSizeStepper!.value)
-        let maximumSize = Offset(maximumSizeStepper!.value)
-        drawerViewController.configuration = DrawerConfiguration(gravity: gravity, initialOffset: initialOffset, allowedRange: minimumSize...maximumSize, adjustRange: nil, isDraggable: draggableSwitch!.isOn, isClosable: closeableSwitch!.isOn, scrollView: nil)
+        let minimumOffset = Offset(minimumOffsetStepper!.value)
+        let maximumOffset = Offset(maximumOffsetStepper!.value)
+        let isDraggable = draggableSwitch!.isOn
+        let isClosable = closeableSwitch!.isOn
+        drawerViewController.configuration = DrawerConfiguration(gravity: gravity, initialOffset: initialOffset, allowedRange: minimumOffset...maximumOffset, adjustRange: nil, isDraggable: isDraggable, isClosable: isClosable, scrollView: nil)
         openDrawer(drawerViewController, animated: true)
     }
     
@@ -51,11 +53,11 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func minimumSizeChanged(_ sender: Any) {
-        minimumSizeLabel.text = numberFormatter.string(for: minimumSizeStepper.value)
+        minimumOffsetLabel.text = numberFormatter.string(for: minimumOffsetStepper.value)
     }
     
     @IBAction func maximumSizeChanged(_ sender: Any) {
-        maximumSizeLabel.text = numberFormatter.string(for: maximumSizeStepper.value)
+        maximumOffsetLabel.text = numberFormatter.string(for: maximumOffsetStepper.value)
     }
     
 }
