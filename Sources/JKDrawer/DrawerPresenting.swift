@@ -14,7 +14,7 @@ public protocol DrawerPresenting: class {
     func openDrawer(_ drawer: DrawerPresentable, animated: Bool)
     func closeDrawer(_ drawer: DrawerPresentable, animated: Bool)
 
-    func changeDrawer(_ drawer: DrawerPresentable, offset: Offset, clamped: Bool, animated: Bool)
+    func changeDrawer(_ drawer: DrawerPresentable, offset: Offset, velocity: CGFloat, clamped: Bool, animated: Bool)
 
     func willOpenDrawer(_ drawer: DrawerPresentable)
     func didOpenDrawer(_ drawer: DrawerPresentable)
@@ -167,15 +167,20 @@ public extension DrawerPresenting where Self: UIViewController {
 
     private func handlePanGestureRecognizer(_ gestureRecognizer: UIPanGestureRecognizer, for drawer: DrawerPresentable) {
         let translation: CGFloat
+        let velocity: CGFloat
         switch drawer.configuration.gravity {
         case .bottom:
             translation = gestureRecognizer.translation(in: view).y
+            velocity = gestureRecognizer.velocity(in: view).y
         case .left:
             translation = -gestureRecognizer.translation(in: view).x
+            velocity = -gestureRecognizer.velocity(in: view).x
         case .top:
             translation = -gestureRecognizer.translation(in: view).y
+            velocity = -gestureRecognizer.velocity(in: view).y
         case .right:
             translation = gestureRecognizer.translation(in: view).x
+            velocity = gestureRecognizer.velocity(in: view).x
         }
         gestureRecognizer.setTranslation(.zero, in: view)
 
@@ -183,9 +188,9 @@ public extension DrawerPresenting where Self: UIViewController {
 
         switch gestureRecognizer.state {
         case .began, .changed:
-            changeDrawer(drawer, offset: offset, clamped: false, animated: false)
+            changeDrawer(drawer, offset: offset, velocity: velocity, clamped: false, animated: false)
         case .ended:
-            changeDrawer(drawer, offset: offset, clamped: true, animated: true)
+            changeDrawer(drawer, offset: offset, velocity: velocity, clamped: true, animated: true)
         default:
             break
         }
@@ -280,14 +285,15 @@ public extension DrawerPresenting where Self: UIViewController {
         }
     }
 
-    func changeDrawer(_ drawer: DrawerPresentable, offset: CGFloat, clamped: Bool, animated: Bool) {
+    func changeDrawer(_ drawer: DrawerPresentable, offset: CGFloat, velocity: CGFloat, clamped: Bool, animated: Bool) {
         let adjustedOffset: CGFloat
         var size: CGFloat
         let minSize = drawer.configuration.allowedRange.lowerBound
 
         if clamped {
             let closeTreshold = minSize / 2
-            if drawer.configuration.isClosable, offset < closeTreshold {
+            let velocityTreshold = drawer.configuration.velocityTreshold
+            if drawer.configuration.isClosable, offset < closeTreshold || velocity > velocityTreshold {
                 closeDrawer(drawer, animated: true)
                 return
             }

@@ -61,7 +61,10 @@ public struct DrawerConfiguration {
     /// When `true` the drawer can be dragged closed. It will close if the offset is below half of the lower bound of the `allowedRange`.
     public let isClosable: Bool
     
-    public init(gravity: Gravity = .bottom, initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, scrollView: UIScrollView? = nil) {
+    /// Speed with which user has to swipe to trigger closing a drawer without dragging all the way
+    public let velocityTreshold: CGFloat
+    
+    public init(gravity: Gravity = .bottom, initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, velocityTreshold: CGFloat = 200, scrollView: UIScrollView? = nil) {
         self.gravity = gravity
         self.initialOffset = initialOffset
         self.allowedRange = allowedRange
@@ -70,6 +73,7 @@ public struct DrawerConfiguration {
         self.drawerConstraints = [:]
         self.isDraggable = isDraggable
         self.isClosable = isClosable
+        self.velocityTreshold = velocityTreshold
         self.scrollView = scrollView
     }
     
