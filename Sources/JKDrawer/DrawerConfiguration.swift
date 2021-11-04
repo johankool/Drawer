@@ -35,18 +35,18 @@ public enum Gravity {
 public struct DrawerConfiguration {
    
     /// Gravity determines on which side the drawer appears.
-    public let gravity: Gravity
+    public var gravity: Gravity
     
     /// The initial offset for the drawer.
     ///
     /// The offset is distance from the parent view at the side where the drawer is attached to the opposite side. For example, when `gravity` is `.bottom` it is the distance from the bottom of the parent view to the top of the drawer. Note that the size of the drawer may be different and could be partly offscreen.
-    public let initialOffset: Offset
+    public var initialOffset: Offset
     
     /// The range of offsets the drawer is allowed to have.
     public var allowedRange: ClosedRange<Offset>
     
     /// Ability to adjust offset to enable snapping
-    public let adjustRange: ((Offset) -> Offset)?
+    public var adjustRange: ((Offset) -> Offset)?
     
     /// When `true` the drawer can be dragged to change its offset.
     public var isDraggable: Bool {
@@ -59,10 +59,10 @@ public struct DrawerConfiguration {
     public weak var scrollView: UIScrollView?
     
     /// When `true` the drawer can be dragged closed. It will close if the offset is below half of the lower bound of the `allowedRange`.
-    public let isClosable: Bool
+    public var isClosable: Bool
     
     /// Speed with which user has to swipe to trigger closing a drawer without dragging all the way
-    public let velocityTreshold: CGFloat
+    public var velocityTreshold: CGFloat
     
     public init(gravity: Gravity = .bottom, initialOffset: Offset = 0, allowedRange: ClosedRange<Offset>, adjustRange: ((Offset) -> Offset)? = nil, isDraggable: Bool = true, isClosable: Bool = false, velocityTreshold: CGFloat = 200, scrollView: UIScrollView? = nil) {
         self.gravity = gravity

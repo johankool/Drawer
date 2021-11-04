@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name          = "JKDrawer"
-  s.version       = "0.9.0"
+  s.version       = "0.9.1"
  
   s.summary       = "A Maps like drawer for iOS."
   s.description   = <<-DESC
@@ -24,7 +24,7 @@ Features:
   s.author        = { "Johan Kool" => "johan@egeniq.com" }
 
   s.ios.deployment_target = "10.0"
-  s.swift_versions = ['4.2', '4.3', '5.0', '5.1']
+  s.swift_versions = ['4.2', '4.3', '5.0', '5.1', '5.5']
   
   s.source        = { :git => "https://github.com/johankool/Drawer.git", :tag => "#{s.version}"  }
   s.source_files  = "Sources/JKDrawer/*.{h,swift}"

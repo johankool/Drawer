@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "JKDrawer",
-        "repositoryURL": "https://github.com/johankool/Drawer",
+        "repositoryURL": "https://github.com/johankool/Drawer.git",
         "state": {
           "branch": "master",
-          "revision": "84516b680af6312894dff42b64ed663dcae8c13f",
+          "revision": "8011d41bdf5b264da8042ffe295b07101f078de2",
           "version": null
         }
       }

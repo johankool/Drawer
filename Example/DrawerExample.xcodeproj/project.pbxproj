@@ -17,7 +17,7 @@
 		C7282B1C23A45E0A003E591B /* DrawerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7282B1B23A45E0A003E591B /* DrawerViewController.swift */; };
 		C76B6FFF23A46172008DF332 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = C76B6FFE23A46172008DF332 /* Log.swift */; };
 		C76B700123A4628B008DF332 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C76B700023A4628B008DF332 /* Main.storyboard */; };
-		C79F04B623B8B8B100336000 /* JKDrawer in Frameworks */ = {isa = PBXBuildFile; productRef = C79F04B523B8B8B100336000 /* JKDrawer */; };
+		C7FBDDEE273406C300169888 /* JKDrawer in Frameworks */ = {isa = PBXBuildFile; productRef = C7FBDDED273406C300169888 /* JKDrawer */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C79F04B623B8B8B100336000 /* JKDrawer in Frameworks */,
+				C7FBDDEE273406C300169888 /* JKDrawer in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +106,7 @@
 			);
 			name = DrawerExample;
 			packageProductDependencies = (
-				C79F04B523B8B8B100336000 /* JKDrawer */,
+				C7FBDDED273406C300169888 /* JKDrawer */,
 			);
 			productName = DrawerExample;
 			productReference = C7282B0223A45D68003E591B /* DrawerExample.app */;
@@ -137,7 +137,7 @@
 			);
 			mainGroup = C7282AF923A45D68003E591B;
 			packageReferences = (
-				C79F04B423B8B8B100336000 /* XCRemoteSwiftPackageReference "Drawer" */,
+				C7FBDDEC273406C300169888 /* XCRemoteSwiftPackageReference "Drawer" */,
 			);
 			productRefGroup = C7282B0323A45D68003E591B /* Products */;
 			projectDirPath = "";
@@ -368,9 +368,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		C79F04B423B8B8B100336000 /* XCRemoteSwiftPackageReference "Drawer" */ = {
+		C7FBDDEC273406C300169888 /* XCRemoteSwiftPackageReference "Drawer" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/johankool/Drawer";
+			repositoryURL = "https://github.com/johankool/Drawer.git";
 			requirement = {
 				branch = master;
 				kind = branch;
@@ -379,9 +379,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		C79F04B523B8B8B100336000 /* JKDrawer */ = {
+		C7FBDDED273406C300169888 /* JKDrawer */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = C79F04B423B8B8B100336000 /* XCRemoteSwiftPackageReference "Drawer" */;
+			package = C7FBDDEC273406C300169888 /* XCRemoteSwiftPackageReference "Drawer" */;
 			productName = JKDrawer;
 		};
 /* End XCSwiftPackageProductDependency section */
